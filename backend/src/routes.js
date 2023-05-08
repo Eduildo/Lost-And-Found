@@ -1,4 +1,4 @@
-import {Database} from '../src/database'
+import {Database} from './database/database'
 import {randomUUID} from 'node:crypto'
 import {buildRoutePath} from '../src/utils/build-route-path'
 
