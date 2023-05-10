@@ -1,29 +1,37 @@
-import {Database} from './database/database'
+import {Database} from './database/database.js'
 import {randomUUID} from 'node:crypto'
-import {buildRoutePath} from '../src/utils/build-route-path'
+import {buildRoutePath} from '../src/utils/build-route-path.js'
+import { ObjectController } from './controllers/objectController.js'
 
 
-const database = new Database()
+const objectController = new ObjectController()
+
 
 export const routes = [
     {
         method: 'GET',
         path: buildRoutePath('/objects'),
         handler: (req, res) =>{
-            const objects = database.select('objects')
+            const objects = objectController.select('objects')
             return res.end(JSON.stringify(objects))
         }
     },
     {
         method: 'POST',
-        path: buildRoutePath('/objects'),
+        path: buildRoutePath('/object'),
         handler: (req, res) => {
-            const {objectName, } = req.body
+            const {objectType, description, state, photo} = req.body
+            console.log(req.body)
             const object = {
                 id:randomUUID(),
-                objectName,   
+                objectType,
+                description,
+                createdAt: Date.now(),
+                state,
+                photo
             }
-            database.insert('objects', object)
+            objectController.insert('objects', object)
+            return res.writeHead(201).end()
         }
 
     }
