@@ -1,11 +1,11 @@
-import {Database} from './database/database.js'
 import {randomUUID} from 'node:crypto'
 import {buildRoutePath} from '../src/utils/build-route-path.js'
 import { ObjectController } from './controllers/objectController.js'
 
 
-const objectController = new ObjectController()
+const objectController = new ObjectController();
 
+let date = new Date().toLocaleDateString();
 
 export const routes = [
     {
@@ -26,7 +26,7 @@ export const routes = [
                 id:randomUUID(),
                 objectType,
                 description,
-                createdAt: Date.now(),
+                createdAt: date,
                 state,
                 photo
             }
@@ -34,5 +34,32 @@ export const routes = [
             return res.writeHead(201).end()
         }
 
+    },
+    {
+        method: 'PUT',
+        path: buildRoutePath('/object/:id'),
+        handler: (req, res) =>{
+            const {id} = req.params
+            const {objectType, description, state, photo} = req.body
+            database.update('objects', id, {
+                objectType, 
+                description, 
+                state, 
+                photo
+            })
+    
+            return res.writeHead(201).end()
+        }
+    },
+    {
+        method:'DELETE',
+        path: buildRoutePath('/object/:id'),
+        handler: (req, res)=>{
+            const {id} = req.params
+            database.delete('objects', id)
+            return res.writeHead(204).end()
+        }
     }
+
+
 ]
