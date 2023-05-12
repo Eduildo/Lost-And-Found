@@ -1,50 +1,83 @@
-import {Database} from '../database/database.js';
+import {randomUUID} from 'node:crypto'
+import {buildRoutePath} from '../utils/build-route-path.js'
+import {Database} from '../database/database.js'
 
-const db = new Database();
 
-export class UseController{
-    select(table, search){
-        let data = db.database[table] ?? [];
+let date = new Date().toLocaleDateString();
 
-        if(search){
-            data = data.filter(row => {
-                return Object.entries(search).some(([key, value]) => {
-                    return row[key].toLowerCase().includes(value.toLowerCase());
+const database = new Database();
+export class ObjectController{
+
+    getObject(){
+
+        return {
+            method: 'GET',
+            path: buildRoutePath('/objects'),
+            handler:(req, res) =>{
+            const objects = database.select('objects')
+            return res.end(JSON.stringify(objects))
+            
+        }
+        }
+    }
+
+    postObject(){
+
+        return {
+            method: 'POST',
+            path: buildRoutePath('/object'),
+            handler: (req, res) => {
+                const {objectType, description, state, photo} = req.body
+                const object = {
+                    id:randomUUID(),
+                    objectType,
+                    description,
+                    createdAt: date,
+                    state,
+                    photo
+                }
+                database.insert('objects', object)
+                return res.writeHead(201).end()
+            }
+        }
+    }
+
+    updateObject(){
+        return {
+            method: 'PUT',
+            path: buildRoutePath('/object/:id'),
+            handler: (req, res) =>{
+                const {id} = req.params
+                const {objectType, description, state, photo} = req.body
+                database.update('objects', id, {
+                    objectType, 
+                    description, 
+                    state, 
+                    photo
                 })
-            })
-        }
-        return data
+        
+                return res.writeHead(201).end()
+            }
+        }  
     }
 
-    insert(table, data){
-        if(Array.isArray(db.database[table])){
-            db.database[table].push(data)
-        }else{
-            db.database[table] = [data]
-        }
 
-        db.persist();
-        return data;
+    deleteObject(){
 
-    }
-
-    update(table, id, data){
-        const rowIndex = db.database[table].findIndex(row =>row.id ===id)
-
-        if(rowIndex > -1){
-            db.database[table][rowIndex] = {id, ...data}
-            db.persist();
-
+        return{
+            method:'DELETE',
+            path: buildRoutePath('/object/:id'),
+            handler: (req, res)=>{
+                const {id} = req.params
+                database.delete('objects', id)
+                return res.writeHead(204).end()
+            }
         }
     }
 
-    delete(table, id){
-        const rowIndex = db.database[table].findIndex(row =>row.id ===id)
 
-        if(rowIndex > -1){
-            db.database[table].splice(rowIndex, 1)
-            db.persist();
 
-        }
-    }
 }
+
+
+
