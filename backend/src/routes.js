@@ -1,9 +1,12 @@
 import {randomUUID} from 'node:crypto'
 import {buildRoutePath} from '../src/utils/build-route-path.js'
-import { ObjectController } from './controllers/objectController.js'
+import {Database} from './database/database.js'
+import { buildRoutePathHandler } from './controllers/objectController.js'
+
+const database = new Database()
 
 
-const objectController = new ObjectController();
+
 
 let date = new Date().toLocaleDateString();
 
@@ -11,9 +14,10 @@ export const routes = [
     {
         method: 'GET',
         path: buildRoutePath('/objects'),
-        handler: (req, res) =>{
-            const objects = objectController.select('objects')
+        handler:(req, res) =>{
+            const objects = database.select('objects')
             return res.end(JSON.stringify(objects))
+            
         }
     },
     {
@@ -21,7 +25,6 @@ export const routes = [
         path: buildRoutePath('/object'),
         handler: (req, res) => {
             const {objectType, description, state, photo} = req.body
-            console.log(req.body)
             const object = {
                 id:randomUUID(),
                 objectType,
@@ -30,7 +33,7 @@ export const routes = [
                 state,
                 photo
             }
-            objectController.insert('objects', object)
+            database.insert('objects', object)
             return res.writeHead(201).end()
         }
 
