@@ -27,7 +27,7 @@ export class ObjectController{
             method: 'POST',
             path: buildRoutePath('/object'),
             handler: (req, res) => {
-                const {objectType, description, state, photo} = req.body
+                const {objectType, description, state, photo, locate} = req.body
                 const object = {
                     id:randomUUID(),
                     objectType,
@@ -35,6 +35,28 @@ export class ObjectController{
                     createdAt: date,
                     state,
                     photo
+                }
+                console.log(object)
+
+                if(object.state === 'perdido'){
+                    const lost = {
+                    id:randomUUID(),
+                    id_object:object.id,
+                    id_user:1,
+                    lost_locate:locate,
+                }
+                console.log(lost)
+
+                database.insert('losts', lost)
+                }else if(object.state === 'achado'){
+                    const found = {
+                        id: randomUUID(),
+                        id_object:object.id,
+                        id_user:1,
+                        lost_locate:locate,
+                    }
+                    console.log(found)
+                    database.insert('founds', found)
                 }
                 database.insert('objects', object)
                 return res.writeHead(201).end()
@@ -63,7 +85,6 @@ export class ObjectController{
 
 
     deleteObject(){
-
         return{
             method:'DELETE',
             path: buildRoutePath('/object/:id'),

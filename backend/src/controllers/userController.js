@@ -6,53 +6,54 @@ import {Database} from '../database/database.js'
 let date = new Date().toLocaleDateString();
 
 const database = new Database();
-export class ObjectController{
+export class UserController{
 
-    getObject(){
+    getUser(){
 
         return {
             method: 'GET',
             path: buildRoutePath('/objects'),
             handler:(req, res) =>{
-            const objects = database.select('objects')
-            return res.end(JSON.stringify(objects))
+            const user = database.select('user')
+            return res.end(JSON.stringify(user))
             
         }
         }
     }
 
-    postObject(){
+    postUser(){
 
         return {
             method: 'POST',
-            path: buildRoutePath('/object'),
+            path: buildRoutePath('/user'),
             handler: (req, res) => {
-                const {objectType, description, state, photo} = req.body
-                const object = {
+                const {nome, email, telefone, photo} = req.body
+                const user = {
                     id:randomUUID(),
-                    objectType,
-                    description,
+                    nome,
+                    email,
+                    telefone,
                     createdAt: date,
-                    state,
                     photo
                 }
-                database.insert('objects', object)
+                database.insert('users', user)
                 return res.writeHead(201).end()
             }
         }
     }
 
-    updateObject(){
+    updateUser(){
         return {
             method: 'PUT',
-            path: buildRoutePath('/object/:id'),
+            path: buildRoutePath('/user/:id'),
             handler: (req, res) =>{
                 const {id} = req.params
-                const {objectType, description, state, photo} = req.body
-                database.update('objects', id, {
-                    objectType, 
-                    description, 
-                    state, 
+                const {nome, email, telefone, photo} = req.body
+                database.update('users', id, {
+                    nome,
+                    email,
+                    telefone,
+                    createdAt: date,
                     photo
                 })
         
@@ -62,14 +63,14 @@ export class ObjectController{
     }
 
 
-    deleteObject(){
+    deleteUser(){
 
         return{
             method:'DELETE',
-            path: buildRoutePath('/object/:id'),
+            path: buildRoutePath('/user/:id'),
             handler: (req, res)=>{
                 const {id} = req.params
-                database.delete('objects', id)
+                database.delete('users', id)
                 return res.writeHead(204).end()
             }
         }
