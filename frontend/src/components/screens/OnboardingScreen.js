@@ -9,7 +9,6 @@ const OnboardingScreen = () => {
     return(
       <View className={`w-4 h-4 mx-1 flex items-center justify-center rounded-full ${selected ? "bg-purple-500": ""} p-2`}>
         <View className={`w-2 h-2 ${selected ? "bg-purple-500":"bg-purple-300"} rounded-full`}>
-
         </View>
       </View>
 

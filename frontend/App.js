@@ -11,6 +11,7 @@ const Stack = createNativeStackNavigator();
 export default function App(){
   const [isFirstLauch, setIsFirstLauch] = useState(false);
   useEffect(() => {
+    
     AsyncStorage.getItem("alreadyLaunched").then((value) =>{
       if(value === null){
         AsyncStorage.SetItem("alreadyLaunched", "true");
