@@ -1,7 +1,7 @@
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TailwindProvider } from 'tailwindcss-react-native';
-import { Home, OnboardingScreen } from './src/components/screens';
+import { Home, Login, OnboardingScreen, UserForm, ObjectForm } from './src/components/screens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 
@@ -29,10 +29,13 @@ export default function App(){
    <TailwindProvider>
     <NavigationContainer>
       <Stack.Navigator>
-     {isFirstLauch && (
+     {!isFirstLauch && (
        <Stack.Screen options={{headerShown:false} } name="OnboardingScreen" component={OnboardingScreen} />
      )}
+      <Stack.Screen options={{headerShown:false}} name="Login" component={Login} />
       <Stack.Screen options={{headerShown:false}} name="Home" component={Home} />
+      <Stack.Screen options={{headerShown:false}} name="UserForm" component={UserForm} />
+      {/*<Stack.Screen options={{headerShown:false}} name="ObjectForm" component={ObjectForm} />*/}
        
       </Stack.Navigator>
     </NavigationContainer>
