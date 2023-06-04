@@ -4,6 +4,7 @@ import { TailwindProvider } from 'tailwindcss-react-native';
 import { Home, Login, OnboardingScreen, UserForm, ObjectForm } from './src/components/screens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
+import DrawerRoutes from './src/routes/drawer.routes'
 
 
 
@@ -36,9 +37,11 @@ export default function App(){
       <Stack.Screen options={{headerShown:false}} name="Login" component={Login} />
       <Stack.Screen options={{headerShown:false}} name="Home" component={Home} />
       <Stack.Screen options={{headerShown:false}} name="UserForm" component={UserForm} />
+      <Stack.Screen options={{headerShown:false}} name="DrawerRoutes" component={DrawerRoutes} />
       {/*<Stack.Screen options={{headerShown:false}} name="ObjectForm" component={ObjectForm} />*/}
-       
       </Stack.Navigator>
+
+
     </NavigationContainer>
     </TailwindProvider>
   

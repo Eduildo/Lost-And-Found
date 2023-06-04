@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 
 
+
 const Login = () => {
     const navigation = useNavigation();
   return (
@@ -27,7 +28,7 @@ const Login = () => {
 
         <Pressable
           className={`h-12 bg-purple-500 rounded-md flex flex-row justify-center items-center px-6`}
-          onPress={() => navigation.replace('Home')}
+          onPress={() => navigation.replace('DrawerRoutes')}
         >
           <View className={`flex-1 flex items-center`}>
             <Text className={`text-white text-base font-medium`}>Login</Text>
