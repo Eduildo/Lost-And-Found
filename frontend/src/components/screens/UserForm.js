@@ -40,7 +40,7 @@ const UserForm = () => {
      
 
         <Pressable
-          className={`h-12 bg-purple-500 rounded-md flex flex-row justify-center items-center px-6`}
+          className={`h-12 bg-[#428288] rounded-md flex flex-row justify-center items-center px-6`}
           onPress={() => navigation.navigate('Login')}
         >
           <View className={`flex-1 flex items-center`}>

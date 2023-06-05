@@ -7,8 +7,8 @@ const OnboardingScreen = () => {
   const navigation = useNavigation();
   const DotComponent = ({selected}) => {
     return(
-      <View className={`w-4 h-4 mx-1 flex items-center justify-center rounded-full ${selected ? "bg-purple-500": ""} p-2`}>
-        <View className={`w-2 h-2 ${selected ? "bg-purple-500":"bg-purple-300"} rounded-full`}>
+      <View className={`w-4 h-4 mx-1 flex items-center justify-center rounded-full ${selected ? "bg-[#0B646b]": ""} p-2`}>
+        <View className={`w-2 h-2 ${selected ? "bg-[#0B646b]":"bg-[#2caeb7]"} rounded-full`}>
         </View>
       </View>
 

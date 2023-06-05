@@ -8,8 +8,13 @@ const Login = () => {
     const navigation = useNavigation();
   return (
     <View className={`flex-1 items-center justify-center bg-slate-50`}>
+      <View className="flex-row items-center justify-between px-8">
+        <View>
+            <Text className="text-[40px] text-[#0B646b] font-bold">LostTrack</Text>
+        </View>
+        </View>
       <View className={`p-8 w-full max-w-sm`}>
-        <Text className={`text-2xl font-bold mb-6 text-slate-900`}>Login</Text>
+        <Text className={`text-2xl font-bold mb-6 text-[#428288]`}>Login</Text>
 
         <TextInput
           className={` bg-white border border-slate-200 rounded-md h-12 px-4 mb-4`}
@@ -23,11 +28,11 @@ const Login = () => {
           placeholder="Enter password"
         />
          <Pressable className={`mb-4`}>
-            <Text className={`text-blue-400 font-bold`}>Reset password</Text>
+            <Text className={`text-[#428288]] font-bold`}>Reset password</Text>
           </Pressable>
 
         <Pressable
-          className={`h-12 bg-purple-500 rounded-md flex flex-row justify-center items-center px-6`}
+          className={`h-12 bg-[#428288] rounded-md flex flex-row justify-center items-center px-6`}
           onPress={() => navigation.replace('DrawerRoutes')}
         >
           <View className={`flex-1 flex items-center`}>
@@ -37,7 +42,7 @@ const Login = () => {
         <View className={`flex items-center`}>
         <Text className={`text-slate-900`}>Não tens uma conta?</Text>
         <Pressable onPress={() => navigation.navigate('UserForm')}>
-            <Text className={`text-blue-400 font-bold`}>Crie aqui</Text>
+            <Text className={`text-[#428288]] font-bold`}>Crie aqui</Text>
           </Pressable>
         </View>
       </View>

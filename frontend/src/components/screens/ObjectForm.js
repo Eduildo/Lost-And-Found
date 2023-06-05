@@ -33,7 +33,7 @@ const ObjectForm = () => {
         />
       
       <Pressable
-          className={`h-12 bg-yellow-600 rounded-md flex flex-row justify-center items-center px-6 mb-4`}
+          className={`h-12 bg-[#6de1ec] rounded-md flex flex-row justify-center items-center px-6 mb-4`}
         >
           <View className={`flex-1 flex items-center`}>
             <Text className={`text-white text-base font-medium`}>Selecione uma foto</Text>
@@ -42,7 +42,7 @@ const ObjectForm = () => {
      
 
         <Pressable
-          className={`h-12 bg-purple-500 rounded-md flex flex-row justify-center items-center px-6`}
+          className={`h-12 bg-[#428288] rounded-md flex flex-row justify-center items-center px-6`}
           onPress={() => navigation.navigate('Home')}
         >
           <View className={`flex-1 flex items-center`}>
