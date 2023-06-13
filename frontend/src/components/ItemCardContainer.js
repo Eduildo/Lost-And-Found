@@ -3,7 +3,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const ItemCardContainer = ({ imageSrc, title, location, data }) => {
+const ItemCardContainer = ({ imageSrc, title, location }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -21,7 +21,7 @@ const ItemCardContainer = ({ imageSrc, title, location, data }) => {
           <View className="flex-row items-center space-x-1">
             <FontAwesome name="map-marker" size={20} color="#8597A2" />
             <Text className="text-[#428288] text-[14px] font-bold">
-              {location?.length > 18 ? `${title.slice(0, 18)}..` : location}
+              {location?.length > 18 ? `${location.slice(0, 18)}..` : location}
             </Text>
           </View>
       
