@@ -58,7 +58,7 @@ export default function Home() {
 
       {/* Menu Container */}
       <View className=" flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color="#0B646B" />
+        
       </View>
       <ScrollView>
         <View className=" flex-row items-center justify-between px-8 mt-8">
