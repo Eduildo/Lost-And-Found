@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 import { UsersRepository } from "../repositories/users-repository";
-import { UserAlreadyExistsError } from "../use-cases/errors/user-already-exists";
+import { UserAlreadyExistsError } from "./errors/user-already-exists";
 import { User } from "@prisma/client";
 
 
