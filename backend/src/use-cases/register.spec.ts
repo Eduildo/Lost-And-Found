@@ -1,4 +1,4 @@
-import {expect, describe, it, beforeEach} from "vitest";
+import {expect, describe, it, beforeEach, afterEach, vi} from "vitest";
 import { RegisterUseCase } from "./register";
 import { compare } from "bcryptjs";
 import { InMemoryUsersRepository } from "../repositories/in-memory/in-memory-users-repository";
@@ -12,8 +12,15 @@ describe("Register Use Case", () => {
     beforeEach(() => {
          usersRepository = new InMemoryUsersRepository()
          sut = new RegisterUseCase(usersRepository);
+         vi.useFakeTimers();  
         
     })
+
+    afterEach(() => {
+        vi.useRealTimers(); 
+    })
+
+
     it("should be able to registe", async () =>{
         
     
@@ -45,15 +52,17 @@ it("should hash user password upon registration", async () =>{
 
 
 it("should not able to register with same email twice", async () =>{
-    const email = "johndoe@example.com"
-   await sut.execute({
+    const email = 'johndoe@example.com'
+    vi.setSystemTime(new Date(2022, 2, 20, 8, 0, 0))
+
+    sut.execute({
         name:"John Doe",
         email,
         password: "123456",
         phone: 123456,
-    }),
+    })
 
-    await expect(() => sut.execute({
+     await expect(() => sut.execute({
         name:"John Doe",
         email,
         password: "123456",

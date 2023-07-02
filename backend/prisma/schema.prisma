@@ -41,9 +41,10 @@ model Object {
 }
 
 model ObjectREquested {
-  id        String @id @default(uuid())
-  user      User   @relation(fields: [user_id], references: [id])
-  user_id   String
-  object    Object @relation(fields: [object_id], references: [id])
-  object_id String
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    String
+  object     Object   @relation(fields: [object_id], references: [id])
+  object_id  String
+  created_at DateTime @default(now())
 }

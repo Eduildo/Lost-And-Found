@@ -17,8 +17,8 @@ describe("Register Use Case", () => {
     it("should be able to authenticate", async () =>{
 
         await usersRepository.create({
-            name: "John Doe",
-            email: "john.doe@gmail.com",
+            name: 'John Doe',
+            email: "johndoe@example.com",
             password_hash: await bcryptjs.hash("123456", 6), 
             phone: 123456,
         })
@@ -52,7 +52,7 @@ describe("Register Use Case", () => {
 
         await expect(() => sut.execute({
             email: "john.doe@gmail.com",
-            password: "123456" 
+            password: "123436" 
 
         })).rejects.toBeInstanceOf(InvalidCredentialsError)
     

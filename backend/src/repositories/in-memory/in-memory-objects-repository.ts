@@ -3,7 +3,12 @@ import { randomUUID } from "node:crypto";
 import { ObjectsRepository } from "../objects-repository";
 
 export class InMemoryObjectsRepository implements ObjectsRepository {
+    
     public items: Object[] = [];
+
+    async findManyByUserId(userId: string) {
+        return this.items.filter(item => item.user_id === userId)
+    }
 
         async create(data: Prisma.ObjectUncheckedCreateInput){
             const object ={

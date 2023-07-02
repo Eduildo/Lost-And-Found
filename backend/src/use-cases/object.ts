@@ -1,7 +1,6 @@
 import { Object } from "@prisma/client";
 import { ObjectsRepository } from "../repositories/objects-repository";
 
-
 interface ObjectUseCaseRequest{
     type: string;
     description: string;
@@ -10,7 +9,7 @@ interface ObjectUseCaseRequest{
     latitude: number;
     longitude: number;
     photo: string;
-    user_id: string;
+    userId: string;
 }
 
 interface ObjectUseCaseResponse{
@@ -28,10 +27,9 @@ export class ObjectUseCase{
         latitude,
         longitude,
         photo,
-        user_id
+        userId,
     }:ObjectUseCaseRequest): Promise<ObjectUseCaseResponse> {
 
-    
     const object = await this.objectRepository.create({
         type,
         description,
@@ -40,11 +38,11 @@ export class ObjectUseCase{
         latitude,
         longitude,
         photo,
-        user_id: user_id,
+        user_id: userId,
     })
 
     return {
-        object,
+        object
     }
     
     }
