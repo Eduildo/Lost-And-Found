@@ -3,8 +3,15 @@ import { randomUUID } from "node:crypto";
 import { ObjectsRepository } from "../objects-repository";
 
 export class InMemoryObjectsRepository implements ObjectsRepository {
+  
     
     public items: Object[] = [];
+
+    async searchMany(query: string, page: number) {
+        return this.items
+      .filter((item) => item.description.includes(query))
+      .slice((page - 1) * 20, page * 20)
+  }
 
     async findManyByUserId(userId: string) {
         return this.items.filter(item => item.user_id === userId)
@@ -15,8 +22,7 @@ export class InMemoryObjectsRepository implements ObjectsRepository {
                 id: randomUUID(),
                 type: data.type,
                 description:data.description,
-                latitude: data.latitude,
-                longitude: data.longitude,
+                local_founds: data.local_founds,
                 dateLost: data.dateLost ? new Date(data.dateLost): new Date(),
                 status: data.status,
                 user_id: data.user_id,

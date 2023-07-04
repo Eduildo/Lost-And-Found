@@ -29,8 +29,7 @@ model Object {
   description     String
   dateLost        DateTime
   status          String
-  latitude        Int
-  longitude       Int
+  local_founds    String            @default("Rua comendador jose correia")
   photo           String
   created_at      DateTime          @default(now())
   user            User              @relation(fields: [user_id], references: [id])

@@ -6,8 +6,7 @@ interface ObjectUseCaseRequest{
     description: string;
     dateLost: Date;
     status: string;
-    latitude: number;
-    longitude: number;
+    local_founds: string;
     photo: string;
     userId: string;
 }
@@ -24,8 +23,7 @@ export class ObjectUseCase{
         description,
         dateLost,
         status,
-        latitude,
-        longitude,
+        local_founds,
         photo,
         userId,
     }:ObjectUseCaseRequest): Promise<ObjectUseCaseResponse> {
@@ -35,8 +33,7 @@ export class ObjectUseCase{
         description,
         dateLost,
         status,
-        latitude,
-        longitude,
+        local_founds,
         photo,
         user_id: userId,
     })
