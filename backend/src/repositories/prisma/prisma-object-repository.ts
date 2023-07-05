@@ -3,6 +3,11 @@ import { ObjectsRepository } from "../objects-repository";
 import { prisma } from "../../lib/prisma";
 
 export class PrismaObjectRepository implements ObjectsRepository{
+  async findMany(): Promise<Object[]> {
+    const objects = await prisma.object.findMany()
+
+    return objects
+  }
 
     async searchMany(query: string, page: number): Promise<Object[]> {
         const objects = await prisma.object.findMany({

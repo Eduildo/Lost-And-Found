@@ -1,7 +1,7 @@
 import {FastifyRequest, FastifyReply} from "fastify";
 
 import { z } from "zod";
-import { UserAlreadyExistsError } from "../../../use-cases/errors/user-already-exists";
+
 import { makeObjectUseCase } from "../../../use-cases/factories/make-object-use-case";
 
 
@@ -16,7 +16,7 @@ export async function create (request: FastifyRequest, reply:FastifyReply){
         userId: z.string(),
     })
 
-    const {type, description, dateLost, status, local_founds, photo, userId } = creatObjectBodySchema.parse(request.body);
+    const {type, description, dateLost, status, local_founds, photo, userId} = creatObjectBodySchema.parse(request.body);
 
   
 
