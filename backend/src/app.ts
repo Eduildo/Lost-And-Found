@@ -5,6 +5,7 @@ import { env } from "./env";
 import fastifyJwt from "@fastify/jwt";
 import { usersRoutes } from "./http/controllers/users/routes";
 import { objectsRoutes } from "./http/controllers/objects/routes";
+import { RequestedRoutes } from "./http/controllers/requested/routes";
 
 
 
@@ -15,6 +16,7 @@ app.register(fastifyJwt, {secret:env.JWT_SECRET,})
 
 app.register(usersRoutes);
 app.register(objectsRoutes);
+app.register(RequestedRoutes);
 
 
 

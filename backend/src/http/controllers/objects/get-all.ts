@@ -5,7 +5,6 @@ const prisma = new PrismaClient()
 
 export async function objects(request: FastifyRequest, reply: FastifyReply) {
   const objects = await prisma.object.findMany()
-  console.log(objects)
 
   return reply.status(200).send({objects})
 }
