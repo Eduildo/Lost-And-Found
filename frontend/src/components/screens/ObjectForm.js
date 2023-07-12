@@ -4,34 +4,38 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
-  Image
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import Axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
+import api from "../../services/api";
+import { BASE_URL } from "../../config";
 
-
-{/* for selected list*/}
+{
+  /* for selected list*/
+}
 const ObjectForm = () => {
+  const { userToken, userInfo } = useContext(AuthContext);
+  const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [tipoObjeto, setTipoObjeto] = useState("");
   const [descricao, setDescricao] = useState("");
   const [local, setLocal] = useState("");
 
-  
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "Perdido", value: "achado" },
     { label: "Achado", value: "perdido" },
   ]);
   const [image, setImage] = useState(null);
+  /*  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); */
+  const [selectedDate, setSelectedDate] = useState("");
 
-
-  
-
-  {/* for image picker*/}
+  {
+    /* for image picker*/
+  }
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -48,31 +52,35 @@ const ObjectForm = () => {
     }
   };
 
- 
-  const navigation = useNavigation();
-
   const handleSubmit = async () => {
     try {
       // Montar o objeto com os dados a serem enviados
-      const data = {
-        objectType: tipoObjeto, // Obter o valor do TextInput para o tipo de objeto
-        description: descricao, // Obter o valor do TextInput para a descrição
-        state: value, // Valor selecionado no DropDownPicker
-        locate: local, // Obter o valor do TextInput para o local encontrado
-        photo: image ? image.assets[0].uri : "", // URL da imagem selecionada (caso exista)
+      const formData = new FormData();
+      formData.append("type", tipoObjeto);
+      formData.append("description", descricao);
+      formData.append("dateLost", selectedDate);
+      formData.append("status", value);
+      formData.append("local_founds", local);
+      formData.append("photo", {
+        uri: image.assets[0].uri,
+        name: "photo.jpg",
+        type: "image/jpeg",
+      });
+      formData.append("user_id", userInfo.id);
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userToken}`, // Adicione o token no cabeçalho de autorização
+        },
       };
-      console.log(data);
 
       // Enviar os dados para a API usando o Axios
-      const response = await Axios.post("http://localhost:3333/object", data);
+      const response = await api.post(`${BASE_URL}/objects`, formData, config);
 
-      if(response.data){
+      if (response.data) {
         alert(response.data);
       }
-
-      // Lógica de tratamento da resposta da API
-
-      // Navegar para a tela "Home" após o envio dos dados
       navigation.navigate("Home");
     } catch (error) {
       // Tratar erros de envio ou resposta da API
@@ -101,7 +109,7 @@ const ObjectForm = () => {
           <TextInput
             className={`w-full bg-white h-28 border border-slate-200 rounded-md px-4 mb-4`}
             placeholderTextColor="#000"
-            multiline = {true}
+            multiline={true}
             numberOfLines={8}
             placeholder="Descrição"
             value={descricao}
@@ -127,6 +135,14 @@ const ObjectForm = () => {
             onChangeText={(text) => setLocal(text)}
           />
 
+          <TextInput
+            className={`w-full bg-white border border-slate-200 rounded-md h-12 px-4 mb-4`}
+            placeholderTextColor="#000"
+            placeholder="insira uma data ex: 06/07/2023"
+            value={selectedDate}
+            onChangeText={(text) => setSelectedDate(text)}
+          />
+
           <TouchableOpacity
             className={`h-12 bg-[#6de1ec] rounded-md flex flex-row justify-center items-center px-6 mb-4`}
             onPress={pickImage}
@@ -134,7 +150,6 @@ const ObjectForm = () => {
             <View className={`flex-1 flex items-center`}>
               <Text className={`text-white text-base font-medium`}>
                 {image ? image.assets[0].fileName : "Imagem do objeto"}
-                
               </Text>
             </View>
           </TouchableOpacity>

@@ -1,11 +1,22 @@
 import {  View, Text, TextInput, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../context/AuthContext';
+
+//import { UserContext }from './userContext'; './userContext'
 
 
 
 const Login = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  //const { setUser } = useContext(UserContext);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+ const {login} = useContext(AuthContext)
+  
+
+
+    
   return (
     <View className={`flex-1 items-center justify-center bg-slate-50`}>
       <View className="flex-row items-center justify-between px-8">
@@ -20,12 +31,16 @@ const Login = () => {
           className={` bg-white border border-slate-200 rounded-md h-12 px-4 mb-4`}
           placeholderTextColor="#000"
           placeholder="Enter email address"
+          value={email}
+          onChangeText={text => setEmail(text)}
         />
 
         <TextInput
           className={` bg-white border border-slate-200 rounded-md h-12 px-4 `}
           placeholderTextColor="#000"
           placeholder="Enter password"
+          value={password}
+        onChangeText={text =>setPassword(text)}
         />
          <Pressable className={`mb-4`}>
             <Text className={`text-[#428288]] font-bold`}>Reset password</Text>
@@ -33,9 +48,10 @@ const Login = () => {
 
         <Pressable
           className={`h-12 bg-[#428288] rounded-md flex flex-row justify-center items-center px-6`}
-          onPress={() => navigation.replace('DrawerRoutes')}
+          onPress={() => {login(email, password)}}
         >
           <View className={`flex-1 flex items-center`}>
+            
             <Text className={`text-white text-base font-medium`}>Login</Text>
           </View>
         </Pressable>

@@ -9,10 +9,16 @@ import { updateObject } from "./update";
 import { objectsByStatus } from "./get-by-status";
 
 
+
+
+
 export async function objectsRoutes(app:FastifyInstance){
+
+
+
     app.addHook("onRequest", verifyJWT);
 
-    app.post("/objects", create)
+    app.post("/objects",  create)
     app.get("/objects/search", search) //Ainda não foi testado
     app.get("/objects/all",{onRequest: [verifyJWT] }, objects)
     app.get("/objects/:status",{onRequest: [verifyJWT] }, objectsByStatus)

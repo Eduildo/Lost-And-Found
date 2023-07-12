@@ -6,13 +6,16 @@ import fastifyJwt from "@fastify/jwt";
 import { usersRoutes } from "./http/controllers/users/routes";
 import { objectsRoutes } from "./http/controllers/objects/routes";
 import { RequestedRoutes } from "./http/controllers/requested/routes";
+const multer = require('fastify-multer');
 
 
 
 
 export const app = fastify();
+const upload = multer({ dest: 'uploads/' });
 
 app.register(fastifyJwt, {secret:env.JWT_SECRET,})
+app.register(upload.contentParser);
 
 app.register(usersRoutes);
 app.register(objectsRoutes);

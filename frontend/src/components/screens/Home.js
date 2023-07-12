@@ -1,30 +1,49 @@
 import {
   SafeAreaView,
-  Image,
   Text,
   View,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Perdidos, Achados } from "../../../assets";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useContext, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import MenuContainer from "../MenuContainer";
 
 import { FontAwesome } from "@expo/vector-icons";
 import ItemCardContainer from "../ItemCardContainer";
-import { getPlacesData } from "../../../api";
+import { AuthContext } from "../../context/AuthContext";
+import api from "../../services/api";
 
 export default function Home() {
+  const { userToken, userInfo } = useContext(AuthContext);
   const navigation = useNavigation();
-
   const [type, setType] = useState("perdidos");
+  const [objects, setObjects] = useState([]);
+
+  async function loadObject() {
+    console.log(userToken);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userToken}`, // Adicione o token no cabeçalho de autorização
+      },
+    };
+    const response = await api.get(`/objects/all`, config);
+
+    setObjects(response.data);
+    console.log(response.data.objects);
+  }
+
   useLayoutEffect(() => {
+    console.log(objects);
     navigation.setOptions({
       headerShown: false,
     });
+  }, []);
+
+  useEffect(() => {
+    loadObject();
   }, []);
 
   return (
@@ -48,6 +67,7 @@ export default function Home() {
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
             console.log(details?.geometry?.viewport);
+            console.log(objects);
           }}
           query={{
             key: "AIzaSyDWVvpx5KcTUZ6RGCYJWG7eFdVy7lJYMBM",
@@ -57,9 +77,7 @@ export default function Home() {
       </View>
 
       {/* Menu Container */}
-      <View className=" flex-1 items-center justify-center">
-        
-      </View>
+      <View className=" flex-1 items-center justify-center"></View>
       <ScrollView>
         <View className=" flex-row items-center justify-between px-8 mt-8">
           <MenuContainer
@@ -93,23 +111,14 @@ export default function Home() {
           </View>
 
           <View className="px-4 mt-8 flex-row items-center justify-evenly flex-wrap">
-            <ItemCardContainer
-              key={"101"}
-              imageSrc={
-                "https://cdn.pixabay.com/photo/2023/06/07/18/14/giraffes-8047856_1280.jpg"
-              }
-              title="something very biger for some people"
-              location="Lisboa"
-            />
-
-            <ItemCardContainer
-              key={"102"}
-              imageSrc={
-                "https://cdn.pixabay.com/photo/2014/12/22/10/04/lions-577104_1280.jpg"
-              }
-              title="sample"
-              location="Leiria"
-            />
+            {objects.map((object) => (
+              <ItemCardContainer
+                key={object.id}
+                imageSrc={object.photo}
+                title={object.title}
+                location={object.local_founds}
+              />
+            ))}
           </View>
         </View>
       </ScrollView>

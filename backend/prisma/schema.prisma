@@ -17,6 +17,7 @@ model User {
   phone           Int
   password_hash   String
   created_at      DateTime          @default(now())
+  photo           String            @default("perfil.png")
   object          Object[]
   objectREquested ObjectREquested[]
 

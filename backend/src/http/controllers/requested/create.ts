@@ -4,31 +4,33 @@ import { z } from "zod";
 
 
 const prisma = new PrismaClient()
-export async function requestObject (request: FastifyRequest, reply:FastifyReply){
-    const bodySchema = z.object({
-        id: z.string(),
-      })
+export async function requestObject(request: FastifyRequest, reply: FastifyReply) {
+  const bodySchema = z.object({
+    id: z.string(),
+  });
 
-      const { id } = bodySchema.parse(request.params)
+  const { id } = bodySchema.parse(request.params);
 
-      const object = await prisma.object.findUnique({
-        where:{
-            id,
-        }
-      })
+  const objectRequested = await prisma.objectREquested.findUnique({
+    where: {
+      id,
+    },
+  });
 
+  if (objectRequested && request.user.sub === objectRequested.user_id) {
+    return reply.status(409).send({ message: "Objeto já reivindicado" });
+  }
 
-      const objectRequested =  await prisma.objectREquested.create({
+  if (objectRequested) {
+    return reply.status(409).send({ message: "Objeto já foi solicitado por outro usuário" });
+  }
 
-        data:{
-            object_id: object.id,
-            user_id: request.user.sub,
-            
-        }     
-        })
+  const createdObjectRequested = await prisma.objectREquested.create({
+    data: {
+      object_id: id,
+      user_id: request.user.sub,
+    },
+  });
 
-  
-
-   
-    return reply.status(201).send({objectRequested})
+  return reply.status(201).send({ objectRequested: createdObjectRequested });
 }

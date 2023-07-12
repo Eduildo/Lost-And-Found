@@ -1,14 +1,28 @@
-import { NavigationContainer} from '@react-navigation/native';
+import React, { useContext, useState, useEffect } from 'react';
+import {View, ActivityIndicator} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TailwindProvider } from 'tailwindcss-react-native';
 import { Home, Login, OnboardingScreen, UserForm, } from '../components/screens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect } from 'react';
+import DrawerRoutes from "./drawer.routes"
+import { AuthContext } from '../context/AuthContext';
 
-
+ 
 const Stack = createNativeStackNavigator();
 
 export default function StackRoutes(){
+
+  const {isLoading, userToken} = useContext(AuthContext);
+  if (isLoading){
+    return(
+      <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+          <ActivityIndicator size={'large'}/>
+
+      </View>
+    )
+      
+
+  }
 
     const [isFirstLauch, setIsFirstLauch] = useState(false);
   useEffect(() => {
@@ -25,18 +39,21 @@ export default function StackRoutes(){
 
     return(
         <TailwindProvider>
-        <NavigationContainer>
           <Stack.Navigator>
-         {!isFirstLauch && (
+         {isFirstLauch && (
            <Stack.Screen options={{headerShown:false} } name="OnboardingScreen" component={OnboardingScreen} />
          )}
-          <Stack.Screen options={{headerShown:false}} name="Login" component={Login} />
-          <Stack.Screen options={{headerShown:false}} name="Home" component={Home} />
+{userToken !== null ? <Stack.Screen options={{headerShown:false}} name="Home" component={DrawerRoutes} />: 
+
+<Stack.Screen options={{headerShown:false}} name="Login" component={Login} />
+}
+         
+          
+          {/* <Stack.Screen options={{headerShown:false}} name="Home" component={Home} />
           <Stack.Screen options={{headerShown:false}} name="UserForm" component={UserForm} />
           {/*<Stack.Screen options={{headerShown:false}} name="ObjectForm" component={ObjectForm} />*/}
            
           </Stack.Navigator>
-        </NavigationContainer>
         </TailwindProvider>
     )
 }
